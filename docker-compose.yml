@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  server:
+    # build: ./backend
+    image: harshsingh2028/streamx-backend:latest
+    container_name: server
+    networks:
+      - fullstack-net
+    env_file:
+      - path: ./backend/.env
+        required: true
+    restart: unless-stopped
+
+  client:
+    # build: 
+      # context: ./frontend
+  #     args:
+  #       VITE_SERVER: /api
+    image: harshsingh2028/streamx-frontend:latest
+
+    container_name: client
+    networks:
+      - fullstack-net
+    depends_on:
+      - server
+    
+    restart: unless-stopped
+  
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    depends_on:
+      - server
+      - client
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    networks:
+      - fullstack-net
+    restart: unless-stopped
+
+
+networks:
+  fullstack-net:
+    driver: bridge

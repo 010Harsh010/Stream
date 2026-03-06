@@ -1,0 +1,32 @@
+/* Global layout & box model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: monospace !important;
+}
+
+/* Basic mobile responsiveness tweaks */
+@media (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+}
