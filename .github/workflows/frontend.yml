@@ -1,9 +1,9 @@
-name: StreamX Backend Docker CI   
+name: StreamX Frontend Docker CI   
 on:
   push:
     branches: [ main ]
     paths: 
-      - 'backend/**'
+      - 'frontend/**'
 
 jobs:
   deploy:
@@ -14,9 +14,9 @@ jobs:
 
     - name: Build and push
       run: |
-        docker build -t harshsingh2028/streamx-backend:latest ./backend
+        docker build -t harshsingh2028/streamx-frontend:latest ./frontend
         echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-        docker push harshsingh2028/streamx-backend:latest
+        docker push harshsingh2028/streamx-frontend:latest
 
     - name: SSH into server and deploy
       uses: appleboy/ssh-action@master
@@ -26,7 +26,7 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           cd /home/ubuntu/streamx
-          docker stop server || true
-          docker rm server || true
-          docker pull harshsingh2028/streamx-backend:latest
+          docker stop client || true
+          docker rm client || true
+          docker pull harshsingh2028/streamx-frontend:latest
           docker compose up -d
