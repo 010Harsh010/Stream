@@ -14,9 +14,9 @@ services:
 
   client:
     # build: 
-      # context: ./frontend
-  #     args:
-  #       VITE_SERVER: /api
+    #   context: ./frontend
+    #   args:
+    #     VITE_SERVER: /api
     image: harshsingh2028/streamx-frontend:latest
 
     container_name: client
