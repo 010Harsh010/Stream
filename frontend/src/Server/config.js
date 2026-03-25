@@ -1,6 +1,6 @@
 export class VideoMethods {
   constructor() {
-    this.baseurl = `${import.meta.env.VITE_SERVER}/api/v1/video`;
+    this.baseurl = `${import.meta.env.VITE_SERVER}/video`;
   }
   async uploadVideo({ title, description, videoFile, thumbnail }) {
 

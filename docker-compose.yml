@@ -2,8 +2,8 @@ version: "3.9"
 
 services:
   server:
-    # build: ./backend
-    image: harshsingh2028/streamx-backend:latest
+    build: ./backend
+    # image: harshsingh2028/streamx-backend:latest
     container_name: server
     networks:
       - fullstack-net
@@ -13,11 +13,11 @@ services:
     restart: unless-stopped
 
   client:
-    # build: 
-    #   context: ./frontend
-    #   args:
-    #     VITE_SERVER: /api
-    image: harshsingh2028/streamx-frontend:latest
+    build: 
+      context: ./frontend
+      args:
+        VITE_SERVER: /api
+    # image: harshsingh2028/streamx-frontend:latest
 
     container_name: client
     networks:
@@ -33,6 +33,7 @@ services:
     depends_on:
       - server
       - client
+      - prom-server
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     ports:
@@ -41,6 +42,17 @@ services:
       - fullstack-net
     restart: unless-stopped
 
+  prom-server:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./backend/prometheus-config.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - server
+    networks:
+    - fullstack-net
+    restart: unless-stopped
 
 networks:
   fullstack-net:

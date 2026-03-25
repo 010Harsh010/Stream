@@ -1,6 +1,6 @@
 export default class AuthService {
   constructor() {
-    this.baseUrl = `${import.meta.env.VITE_SERVER}/api/v1/users`;
+    this.baseUrl = `${import.meta.env.VITE_SERVER}/users`;
   }
 
   async verifyEmail({ username, authResult, newPassword }) {

@@ -1,6 +1,6 @@
 export class others {
   constructor() {
-    this.baseurl = `${import.meta.env.VITE_SERVER}/api/v1`;
+    this.baseurl = `${import.meta.env.VITE_SERVER}`;
   }
 
   async getNotifications() {

@@ -8,6 +8,9 @@ import bodyParser from "body-parser";
 import { spawn } from "child_process";
 import { initializeSocket } from "./socket.js";
 import { createClient } from "redis";
+import client from "prom-client";
+import responseTime from "response-time";
+
 
 
 const app = express();
@@ -37,6 +40,37 @@ app.use(express.json({ limit: "200mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
+
+
+// promethium
+
+const register = new client.Registry()
+
+client.collectDefaultMetrics({
+  register
+})
+
+const req_responseTime = new client.Histogram({
+  name: "http_response_time_duration",
+  help: "Duration of HTTP requests in ms",
+  labelNames: ["method", "route", "status_code"],
+  buckets: [10,50,100,250,500,1000,2000],
+  registers: [register]
+})
+
+app.use(responseTime((req, res, time) => {
+  if (req.path === "/metrics") return
+  req_responseTime.labels({
+    method: req.method,
+    route: req.originalUrl,  
+    status_code: res.statusCode
+  }).observe(time)
+}))
+
+app.get("/metrics", async (req, res) => {
+  res.set("Content-Type", register.contentType)
+  res.end(await register.metrics())
+})
 
 // Routes
 import userRouter from "./routes/user.routes.js";
