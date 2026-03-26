@@ -14,7 +14,7 @@ jobs:
 
     - name: Build and push
       run: |
-        docker build -t harshsingh2028/streamx-frontend:latest ./frontend
+        docker build --build-arg VITE_SERVER=${{ secrets.VITE_SERVER }} --build-arg VITE_CLIENT_ID=${{ secrets.VITE_CLIENT_ID }}  -t harshsingh2028/streamx-frontend:latest ./frontend
         echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
         docker push harshsingh2028/streamx-frontend:latest
 
@@ -25,7 +25,8 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
-          cd /home/ubuntu/streamx
-          docker pull harshsingh2028/streamx-frontend:latest
-          docker compose up -d
-          docker image prune -f
+            cd /home/ubuntu/streamx
+            docker pull harshsingh2028/streamx-frontend:latest
+            docker compose down
+            docker compose up -d --force-recreate
+            docker image prune -f
