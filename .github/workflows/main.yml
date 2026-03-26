@@ -4,6 +4,8 @@ on:
     branches: ["main"]
     paths:
       - "docker-compose.yml"
+      - "prometheus-config.yml"
+      - "nginx/**"
 
 jobs:
   deploy:
@@ -20,6 +22,13 @@ jobs:
             cd Stream
             git pull origin main
             cd ..
+
             cp Stream/docker-compose.yml ./docker-compose.yml
+
+            cp Stream/prometheus-config.yml ./prometheus-config.yml
+
+            rm -rf nginx/*
+            cp -r Stream/nginx/* nginx/
+
             docker compose up -d --build
             docker image prune -f

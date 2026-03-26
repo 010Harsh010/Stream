@@ -1,4 +1,4 @@
-name: StreamX Frontend Docker CI   
+name: StreamX Frontend 
 on:
   push:
     branches: [ main ]

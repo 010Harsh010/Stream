@@ -47,7 +47,7 @@ services:
     # ports:
     #   - 9090:9090
     volumes:
-      - ./backend/prometheus-config.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus-config.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
     depends_on:
       - server
@@ -62,8 +62,8 @@ services:
     environment:
       - GF_SERVER_ROOT_URL=http://localhost/grafana/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
-      - GF_AUTH_ANONYMOUS_ENABLED=false
-      - GF_SECURITY_ADMIN_PASSWORD=strongpassword
+      # - GF_AUTH_ANONYMOUS_ENABLED=false
+      # - GF_SECURITY_ADMIN_PASSWORD=strongpassword
     # ports:
     #   - '3000:3000'
     volumes:
