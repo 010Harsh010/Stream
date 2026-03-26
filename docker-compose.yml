@@ -53,7 +53,21 @@ services:
     networks:
     - fullstack-net
     restart: unless-stopped
-
+    
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - fullstack-net
+    
 networks:
   fullstack-net:
     driver: bridge
+
+volumes:
+  grafana-storage: {}
