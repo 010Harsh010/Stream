@@ -20,14 +20,13 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           cd /home/ubuntu/streamx/
-          docker stop nginx || true
-          docker rm nginx || true
           cd Stream
           git pull origin main
           cd ..
           rm -rf nginx/*
           cp -r Stream/nginx/* nginx/
           docker compose up -d --build
+          docker image prune -f
 
 
 

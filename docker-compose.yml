@@ -2,8 +2,8 @@ version: "3.9"
 
 services:
   server:
-    build: ./backend
-    # image: harshsingh2028/streamx-backend:latest
+    # build: ./backend
+    image: harshsingh2028/streamx-backend:latest
     container_name: server
     networks:
       - fullstack-net
@@ -13,11 +13,11 @@ services:
     restart: unless-stopped
 
   client:
-    build: 
-      context: ./frontend
-      args:
-        VITE_SERVER: /api
-    # image: harshsingh2028/streamx-frontend:latest
+    # build: 
+    #   context: ./frontend
+    #   args:
+    #     VITE_SERVER: /api
+    image: harshsingh2028/streamx-frontend:latest
 
     container_name: client
     networks:
@@ -62,8 +62,8 @@ services:
     environment:
       - GF_SERVER_ROOT_URL=http://localhost/grafana/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
-    #   - GF_AUTH_ANONYMOUS_ENABLED=false
-    #   - GF_SECURITY_ADMIN_PASSWORD=strongpassword
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_SECURITY_ADMIN_PASSWORD=strongpassword
     # ports:
     #   - '3000:3000'
     volumes:

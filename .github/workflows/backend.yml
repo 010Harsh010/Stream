@@ -26,7 +26,6 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           cd /home/ubuntu/streamx
-          docker stop server || true
-          docker rm server || true
           docker pull harshsingh2028/streamx-backend:latest
           docker compose up -d
+          docker image prune -f
