@@ -26,7 +26,10 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
             cd /home/ubuntu/streamx
-            docker pull harshsingh2028/streamx-frontend:latest
             docker compose down
-            docker compose up -d --force-recreate
+
+            docker rmi harshsingh2028/streamx-frontend:latest
+            docker pull harshsingh2028/streamx-frontend:latest
+            
+            docker compose up -d
             docker image prune -f

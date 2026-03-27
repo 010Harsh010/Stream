@@ -12,7 +12,7 @@ import fetch from "node-fetch";
 
 const setrefreshtoken = async ({ code }) => {
   try {
-    console.log(code);
+    console.log("Redirect url",process.env.REDIRECT_URL);
 
     const data = await fetch(`https://oauth2.googleapis.com/token`, {
       method: "POST",
@@ -25,7 +25,7 @@ const setrefreshtoken = async ({ code }) => {
         grant_type: "authorization_code",
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
-        redirect_uri: process.env.REDIRECT_URL,
+        redirect_uri: "postmessage",
         code: code,
       }),
     });
@@ -667,8 +667,8 @@ const logingoogle = asynHandler(async (req, res) => {
 
     const options = {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      secure: false,
+      sameSite: "lax",
     };
     return res
       .status(200)
