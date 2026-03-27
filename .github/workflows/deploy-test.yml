@@ -11,7 +11,7 @@ jobs:
 
       - name: Install k6
         run: |
-          snap install k6
+          sudo snap install k6
 
       - name: Run Smoke-Test
         run: |
