@@ -8,14 +8,14 @@ export const options = {
   },
   stages: [
     { duration: '20s', target: 50 },    // warm-up
-    { duration: '30s', target: 2000 },  // sudden spike
-    { duration: '1m', target: 2000 },  // sustain spike
+    { duration: '30s', target: 200 },  // sudden spike
+    { duration: '1m', target: 200 },  // sustain spike
     { duration: '20s', target: 0 },     // drop
   ],
 };
 
 export default function() {
-  let res = http.get('http://localhost/api/health');
+  let res = http.get('http://ec2-3-110-253-35.ap-south-1.compute.amazonaws.com/api/health');
     check(res, { "status is 200": (res) => res.status === 200 });
     // sleep(1);
 }
