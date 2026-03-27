@@ -25,7 +25,7 @@ const setrefreshtoken = async ({ code }) => {
         grant_type: "authorization_code",
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
-        redirect_uri: "http://localhost:5173",
+        redirect_uri: process.env.REDIRECT_URL,
         code: code,
       }),
     });
@@ -586,11 +586,18 @@ const verifyEmail = asynHandler(async (req, res) => {
 const logingoogle = asynHandler(async (req, res) => {
   try {
     const { code } = req.body;
+    // console.log("code ", code);
+    
     const tokenjson = await setrefreshtoken({ code });
+    // console.log("tokenjson", tokenjson);
+    
     if (!tokenjson) {
       throw new ApiError(404, "Unable to Access account");
     }
     const refreshAccessTokenjson = tokenjson.refresh_token;
+
+    // console.log("refreshtonkenjson ", refreshAccessTokenjson);
+    
 
     const accessTokenResponse = await fetch(
       `https://oauth2.googleapis.com/token?client_id=${process.env.GOOGLE_CLIENT_ID}&client_secret=${process.env.GOOGLE_CLIENT_SECRET}&grant_type=refresh_token&refresh_token=${refreshAccessTokenjson}`,
@@ -601,7 +608,13 @@ const logingoogle = asynHandler(async (req, res) => {
       }
     );
     const newAccessTokenData = await accessTokenResponse.json();
+
+    // console.log("newaccestokendata",newAccessTokenData);
+    
     const accessTokens = newAccessTokenData.access_token;
+
+    // console.log("accestoken ",accessTokens);
+    
 
     if (!accessTokens) {
       throw new ApiError(401, "Failed to fetch new access token");
@@ -615,16 +628,19 @@ const logingoogle = asynHandler(async (req, res) => {
       }
     );
 
+    // console.log("user res",userRes);
+    
+
     const userData = await userRes.json();
     // console.log("data",userData);
 
     const { email } = userData;
-    console.log(email);
+    // console.log("email", email);
 
     const existedUser = await User.findOne({
       email: email,
     });
-    console.log("user", existedUser);
+    // console.log("user", existedUser);
 
     if (existedUser?.GrantToken) {
       existedUser.GrantToken = refreshAccessTokenjson;
